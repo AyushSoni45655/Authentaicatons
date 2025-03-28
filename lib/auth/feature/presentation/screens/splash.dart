@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,7 +31,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigate() async {
     try {
-      await Future.delayed(Duration(seconds: 0));
+      SharedPreferences sh = await SharedPreferences.getInstance();
+      await sh.setBool("isFirstTime", false);
+      await Future.delayed(Duration(seconds: 3));
       context.read<UserBloc>().add(UserIsLoggedInEvent());
     } catch (e) {
       debugPrint("Error in  the navigation: $e");

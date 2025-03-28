@@ -10,11 +10,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/theme/theme.dart';
 
 void main()async{
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences sh = await SharedPreferences.getInstance();
+  bool isFirst =  sh.getBool("isFirstTime")??true;
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   setUpLocator();
   await Firebase.initializeApp(
     options: optionss
@@ -23,11 +26,12 @@ void main()async{
     BlocProvider(create: (context) => GetIt.I<ToggleBloc>(),),
     BlocProvider(create: (context) => GetIt.I<CheckBloc>(),),
     BlocProvider(create: (context) => GetIt.I<UserBloc>()..add(UserGetEvent()),)
-  ], child: MyApp()));
+  ], child: MyApp(isFirst: isFirst,)));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isFirst;
+  const MyApp({super.key, required this.isFirst});
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AAppTheme.darkTheme,
           theme: AAppTheme.lightTheme,
           themeMode: ThemeMode.system,
-          routerConfig: appRoutes,
+          routerConfig: goRouter(isFirst: isFirst),
         );
       },
     );
