@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'custom_theme/app_bar_theme.dart';
 import 'custom_theme/bottom_sheet_theme.dart';
@@ -20,6 +21,7 @@ class AAppTheme {
       drawerTheme: ACustomDrawer.lightDrawer,
       brightness: Brightness.light,
       fontFamily: 'Poppins',
+      //fontFamily: GoogleFonts.roboto().fontFamily,
       textTheme: ATextTheme.lightTextTheme,
       elevatedButtonTheme: AElevatedButtonTheme.lightElevatedButtonTheme,
       appBarTheme: AAppBarTheme.lightAppBarTheme,
